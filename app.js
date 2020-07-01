@@ -30,6 +30,10 @@ const cardArray = [
         img: 'images/pkm-04.jpg'
     },
     {
+        name: 'pkm-04',
+        img: 'images/pkm-04.jpg'
+    },
+    {
         name: 'pkm-05',
         img: 'images/pkm-05.jpg'
     },
@@ -142,21 +146,75 @@ const cardArray = [
         img: 'images/pkm-18.jpg'
     },
 ]
+cardArray.sort(() => 0.5 - Math.random())
 
-const grid = document.querySelector('.grid')
+const grid = document.querySelector('.grid');
+const resultDisplay = document.querySelector('#result');
+const resetButton = document.querySelector('#reset');
+var cardsChoosen = [];
+var cardsChoosenId = [];
+var cardsWon = [];
 
 //create board
-
 function createBoard(){
     for (let i=0; i<cardArray.length; i++){
         var card = document.createElement('img');
-        card.setAttribute('src', 'images/pkm-back');
+        card.setAttribute('src', 'images/pkm-pokeball.jpg');
         card.setAttribute('data-id', i);
-        //card.addEventListener('click', flipcard);
+        card.addEventListener('click', flipcard);
         grid.appendChild(card)
     }
 }
 
+//find match
+function checkForMatch(){
+    var cards = document.querySelectorAll('img');
+    var optionOneId = cardsChoosenId[0];
+    var optionTwoId = cardsChoosenId[1];
+    if (cardsChoosen[0] === cardsChoosen[1]){
+        alert('You Found a Match')
+        cards[optionOneId].setAttribute('src', 'images/blank.jpg')
+        cards[optionTwoId].setAttribute('src', 'images/blank.jpg')
+        cardsWon.push(cardsChoosen)
+    } else {
+        cards[optionOneId].setAttribute('src', 'images/pkm-pokeball.jpg')
+        cards[optionTwoId].setAttribute('src', 'images/pkm-pokeball.jpg')
+        alert('Sorry, try again')
+    }
+    cardsChoosen = [];
+    cardsChoosenId = [];
+    resultDisplay.innerHTML = cardsWon.length
+    if (cardsWon.length === cardArray.length/2){
+        resultDisplay.innerHTML = "Congratulations, You Won"   
+    }
+}
+
+
+//flipcard 
+function flipcard(){
+    var cardId = this.getAttribute('data-id');
+    cardsChoosen.push(cardArray[cardId].name);
+    cardsChoosenId.push(cardId); 
+    this.setAttribute('src', cardArray[cardId].img)
+    if (cardsChoosen.length === 2){
+        setTimeout(checkForMatch, 500)
+    }
+}
+
+//reset
+function reset(){
+    resultDisplay.innerHTML = 0;
+    cardsChoosen = [];
+    cardsChoosenId = [];
+    cardsWon = [];
+    while ( grid.firstChild) {
+        grid.removeChild(grid.firstChild)
+    }
+    cardArray.sort(() => 0.5 - Math.random())
+    createBoard()
+}
+
+resetButton.addEventListener('click', reset)
 createBoard()
 
 })
