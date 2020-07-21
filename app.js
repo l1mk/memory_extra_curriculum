@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const top = document.querySelector('#top')
+    const instBtn = document.querySelector('#inst-Btn')
+    const instruction = document.querySelector('#instructions')
+    const grid = document.querySelector('.grid');
+    const resultDisplay = document.querySelector('#result');
+    const resetButton = document.querySelector('#reset');
+    const timeLeft = document.querySelector('#time')
+    var cardsChoosen = [];
+    var cardsChoosenId = [];
+    var cardsWon = [];
+    let topScore = 0;
+    let currentTime = 60;
+    let timerId;
+
 //card options
 const cardArray = [
     {
@@ -148,19 +162,13 @@ const cardArray = [
 ]
 cardArray.sort(() => 0.5 - Math.random())
 
-const grid = document.querySelector('.grid');
-const resultDisplay = document.querySelector('#result');
-const resetButton = document.querySelector('#reset');
-var cardsChoosen = [];
-var cardsChoosenId = [];
-var cardsWon = [];
-
 //create board
 function createBoard(){
     for (let i=0; i<cardArray.length; i++){
         var card = document.createElement('img');
-        card.setAttribute('src', 'images/pkm-pokeball.jpg');
+        card.setAttribute('src', 'images/pkm-pokeball.png');
         card.setAttribute('data-id', i);
+        card.classList.add('card')
         card.addEventListener('click', flipcard);
         grid.appendChild(card)
     }
@@ -172,13 +180,12 @@ function checkForMatch(){
     var optionOneId = cardsChoosenId[0];
     var optionTwoId = cardsChoosenId[1];
     if (cardsChoosen[0] === cardsChoosen[1]){
-        alert('You Found a Match')
-        cards[optionOneId].setAttribute('src', 'images/blank.jpg')
-        cards[optionTwoId].setAttribute('src', 'images/blank.jpg')
+        cards[optionOneId].setAttribute('src', 'images/blank.png')
+        cards[optionTwoId].setAttribute('src', 'images/blank.png')
         cardsWon.push(cardsChoosen)
     } else {
-        cards[optionOneId].setAttribute('src', 'images/pkm-pokeball.jpg')
-        cards[optionTwoId].setAttribute('src', 'images/pkm-pokeball.jpg')
+        cards[optionOneId].setAttribute('src', 'images/pkm-pokeball.png')
+        cards[optionTwoId].setAttribute('src', 'images/pkm-pokeball.png')
         alert('Sorry, try again')
     }
     cardsChoosen = [];
@@ -186,6 +193,11 @@ function checkForMatch(){
     resultDisplay.innerHTML = cardsWon.length
     if (cardsWon.length === cardArray.length/2){
         resultDisplay.innerHTML = "Congratulations, You Won"   
+        if (topScore < cardsWon.length){
+            topScore = cardsWon.length
+            top.innerHTML = `${topScore} by Player 1`  
+        }
+        alert ("game over")
     }
 }
 
@@ -201,8 +213,26 @@ function flipcard(){
     }
 }
 
+
+//timer
+function timer(){
+    currentTime--
+    timeLeft.textContent = currentTime
+    if (currentTime === 0){
+        if (topScore < cardsWon.length){
+            topScore = cardsWon.length
+            top.innerHTML = `${topScore} by Player1`  
+        }
+        reset()
+        alert ("Times up, Try Again")
+    }
+}
+
 //reset
 function reset(){
+    clearInterval(timerId)
+    currentTime = 60
+    timeLeft.textContent = currentTime
     resultDisplay.innerHTML = 0;
     cardsChoosen = [];
     cardsChoosenId = [];
@@ -212,9 +242,19 @@ function reset(){
     }
     cardArray.sort(() => 0.5 - Math.random())
     createBoard()
+    timerId = setInterval(timer, 1000)
 }
+    createBoard()
+    resetButton.addEventListener('click', reset) 
+    instBtn.addEventListener('click', () =>{
+        if (instBtn.innerHTML === 'Instructions'){
+         instBtn.innerHTML = 'Hide'
+         instruction.style.display = 'block'
+        } else if (instBtn.innerHTML === 'Hide'){
+         instBtn.innerHTML = 'Instructions'
+         instruction.style.display = 'none'  
+        }
+     })
 
-resetButton.addEventListener('click', reset)
-createBoard()
-
+     timerId = setInterval(timer, 1000)
 })

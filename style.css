@@ -1,7 +1,46 @@
-.grid {
+.header {
+    padding: 15px;
+    background-color: black;
+    color: white;
+    font-size: 30px;
+}
+nav {
+    float: right;
+    font-size: 15px
+}
+h1 {
+    align-self: center;
+}
+h1, h2, h3, h4, p, div, span {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+#instructions {
+    display: none;
+}
+
+p {
+    font-size: xx-small;
+}
+
+.border {
     display: flex;
     flex-wrap: wrap;
+    height: 450px;
+    width: 450px;
     margin: auto;
-    height: 606px;
-    width: 606px;
+    background-image: url('images/border.jpeg');
+    background-size: cover;
+}
+
+.grid {
+    display: flex;
+    flex-flow: row wrap;
+    margin: auto;
+    height: 360px;
+    width: 360px;
+}
+
+.card {
+    height: 60px;
+    width: 60px;
 }
