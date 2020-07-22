@@ -1,7 +1,8 @@
 .header {
-    padding: 15px;
+    padding: 10px;
     background-color: black;
     color: white;
+    border: solid 5px;
     font-size: 30px;
 }
 nav {
