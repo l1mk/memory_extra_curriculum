@@ -6,7 +6,9 @@
 }
 nav {
     float: right;
-    font-size: 15px
+    font-size: 15px;
+    position: relative;
+    bottom: 20px 
 }
 h1 {
     align-self: center;
